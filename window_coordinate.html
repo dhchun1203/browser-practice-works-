@@ -9,6 +9,11 @@
 				background-color: black;
 				/* overflow: hidden; */
 			}
+			aside {
+				position: fixed;
+				top: 20px;
+				right: 20px;
+			}
 			div {
 				width: 100px;
 				height: 100px;
@@ -22,6 +27,11 @@
 		</style>
 	</head>
 	<body>
+		<aside>
+			<button class="scrollBy">Scroll by 100px(y)</button>
+			<button class="scrollTo">Scroll to 100px(y)</button>
+			<button class="scrollInto">Scroll into special</button>
+		</aside>
 		<div></div>
 		<div></div>
 		<div></div>
@@ -46,6 +56,22 @@
 				console.log(rect);
 				console.log(`client: ${event.clientX}, ${event.clientY}`);
 				console.log(`page: ${event.pageX}, ${event.pageY}`);
+			});
+			const scrollBy = document.querySelector(".scrollBy");
+			const scrollTo = document.querySelector(".scrollTo");
+			const scrollInto = document.querySelector(".scrollInto");
+			const option = {
+				top: 100,
+				behavior: "smooth",
+			};
+			document.addEventListener("click", (event) => {
+				if (event.target == scrollBy) {
+					window.scrollBy(option);
+				} else if (event.target == scrollTo) {
+					window.scrollTo(option);
+				} else if (event.target == scrollInto) {
+					special.scrollIntoView({ behavior: "smooth" });
+				}
 			});
 		</script>
 	</body>
