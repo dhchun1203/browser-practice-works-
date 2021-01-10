@@ -77,10 +77,7 @@ function updateTimerText(time) {
 	gameTimer.innerText = `${minutes}:${seconds}`;
 }
 
-function showPopUpWithText(text) {
-	popUpText.innerText = text;
-	popUp.classList.remove("pop-up--hide");
-}
+function showPopUpWithText(text) {}
 
 function counter() {
 	const carrotNum = document.querySelectorAll(".carrot");

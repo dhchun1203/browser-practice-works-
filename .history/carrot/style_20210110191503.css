@@ -3,9 +3,6 @@ button {
 	outline: none;
 	cursor: pointer;
 }
-html {
-	background-color: black;
-}
 body {
 	text-align: center;
 }
@@ -66,10 +63,10 @@ body {
 .pop-up {
 	display: block;
 	width: 400px;
-	height: 100px;
+	height: 140px;
 	margin: auto;
 	padding: 20px;
-	background-color: rgba(0, 0, 0, 0.6);
+	background-color: rgba(0, 0, 0, 0.4);
 	border-radius: 20px;
 	color: white;
 	text-align: center;
@@ -86,10 +83,6 @@ body {
 	background-color: wheat;
 	border: 2px solid black;
 	border-radius: 50%;
-	transition: all 200ms ease-in;
-}
-.pop-up__refresh:hover {
-	transform: scale(1.1);
 }
 .pop-up__message {
 	display: block;
