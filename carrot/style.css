@@ -63,6 +63,12 @@ body {
 	height: 100%;
 	margin-top: 40px;
 }
+.carrot:hover {
+	transform: scale(1.1);
+}
+.bug:hover {
+	transform: scale(1.1);
+}
 .pop-up {
 	display: block;
 	width: 400px;
