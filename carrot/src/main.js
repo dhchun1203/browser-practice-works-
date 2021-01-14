@@ -1,131 +1,29 @@
 "use strict";
 import PopUp from "./popup.js";
-import Field from "./field.js";
-import * as sound from "./sound.js";
-const CARROT__COUNT = 5;
-const BUG__COUNT = 5;
-const GAME__DURATION_SEC = 5;
-
-const gameBtn = document.querySelector(".game__button");
-const gameTimer = document.querySelector(".game__timer");
-const gameScore = document.querySelector(".game__score");
-
-let started = false;
-let score = 0;
-let timer = undefined;
+import Game from "./game.js";
 
 const gameFinishBanner = new PopUp();
+const game = new Game(3, 2, 2);
+
+game.setGameStopListener((reason) => {
+	console.log(reason);
+	let message;
+	switch (reason) {
+		case "cancel":
+			message = "Replay❓";
+			break;
+		case "win":
+			message = "YOU WIN 🎉";
+			break;
+		case "lose":
+			message = "YOU LOSE 💩";
+			break;
+		default:
+			throw new Error("not valid reason");
+	}
+	gameFinishBanner.showWithText(message);
+});
+
 gameFinishBanner.setClickListener(() => {
-	startGame();
+	game.start();
 });
-
-const gameField = new Field(CARROT__COUNT, BUG__COUNT);
-gameField.setClickListener(onItemClick);
-
-function onItemClick(item) {
-	if (!started) {
-		return;
-	}
-	if (item === "carrot") {
-		score++;
-		updateScoreBoard();
-		if (score === CARROT__COUNT) {
-			finishGame(true);
-		}
-	} else if (item === "bug") {
-		finishGame(false);
-	}
-}
-
-gameBtn.addEventListener("click", () => {
-	if (started) {
-		stopGame();
-	} else {
-		startGame();
-	}
-
-	counter();
-});
-
-function startGame() {
-	started = true;
-	initGame();
-	showStopButton();
-	showTimerAndScore();
-	startGameTimer();
-	sound.playBackground();
-}
-function stopGame() {
-	started = false;
-	stopGameTimer();
-	hideGameButton();
-	gameFinishBanner.showWithText("REPLAY❓");
-	sound.playAlert();
-	sound.stopBackground();
-}
-
-function finishGame(win) {
-	started = false;
-	hideGameButton();
-	if (win) {
-		sound.playWin();
-	} else {
-		sound.playBug();
-	}
-	stopGameTimer();
-	sound.stopBackground();
-	gameFinishBanner.showWithText(win ? "YOU WON 🎉" : "YOU LOSE 💩");
-}
-
-function showStopButton() {
-	const icon = gameBtn.querySelector(".fas");
-	icon.classList.add("fa-stop");
-	icon.classList.remove("fa-play");
-	gameBtn.style.visibility = "visible";
-}
-
-function hideGameButton() {
-	gameBtn.style.visibility = "hidden";
-}
-
-function showTimerAndScore() {
-	gameTimer.style.visibility = "visible";
-	gameScore.style.visibility = "visible";
-}
-function startGameTimer() {
-	let remainingTimeSec = GAME__DURATION_SEC;
-	updateTimerText(remainingTimeSec);
-	timer = setInterval(() => {
-		if (remainingTimeSec <= 0) {
-			clearInterval(timer);
-			finishGame(CARROT__COUNT === score);
-			return;
-		}
-		updateTimerText(--remainingTimeSec);
-	}, 1000);
-}
-
-function stopGameTimer() {
-	clearInterval(timer);
-}
-
-function updateTimerText(time) {
-	const minutes = Math.floor(time / 60);
-	const seconds = time % 60;
-	gameTimer.innerText = `${minutes}:${seconds}`;
-}
-
-function counter() {
-	const carrotNum = document.querySelectorAll(".carrot");
-	gameScore.innerText = `${carrotNum.length}`;
-}
-
-function initGame() {
-	score = 0;
-	gameScore.innerText = CARROT__COUNT;
-	gameField.init();
-}
-
-function updateScoreBoard() {
-	gameScore.innerText = CARROT__COUNT - score;
-}
